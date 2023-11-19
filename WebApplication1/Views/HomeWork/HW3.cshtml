@@ -1,0 +1,70 @@
+﻿﻿
+@{
+    ViewData["Title"] = "Address";
+}
+
+<h1>Address</h1>
+<select id="selectCity"></select>
+
+<select id="selectSite"></select>
+
+<select id="selectRoad"></select>
+<div id="div1"></div>
+@section Scripts
+    {
+    <script>
+        const SelCity = document.querySelector('#selectCity');
+        const SelSite = document.querySelector('#selectSite');
+        const SelRoad = document.querySelector('#selectRoad');
+        const divv = document.querySelector('#div1')
+
+        SelCity.addEventListener('change', () => {
+
+            LoadSite();
+            rideCity();
+        })
+        SelSite.addEventListener('change', () => {
+            fetch(`@Url.Content("~/Api/road")?districts=${SelSite.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    const roads = data.map(road => `<option>${road}</option>`)
+                    document.querySelector('#selectRoad').innerHTML = roads.join("");
+                })
+            rideCity();
+        })
+        SelRoad.addEventListener('change', () => {
+          
+            rideCity();
+        })
+        function rideCity() {
+            divv.innerHTML = `${SelCity.value}${SelSite.value}${SelRoad.value}`;
+        }
+
+        async function LoadCity()
+        {
+            const response = await fetch('@Url.Content("~/Api/Cities")')
+            const data=await response.json();
+            const datamaps = data.map(你隨便取這是參數 => `<option value='${你隨便取這是參數}'>${你隨便取這是參數}</option>`);
+            SelCity.innerHTML = datamaps.join("");
+
+        }
+        LoadCity();
+
+        async function LoadSite() {
+            const response = await fetch(`@Url.Content("~/Api/districts")?city=${SelCity.value}`)
+            const data = await response.json();
+            const datamaps = data.map(你隨便取這是參數 => `<option value='${你隨便取這是參數}'>${你隨便取這是參數}</option>`);
+            SelSite.innerHTML = datamaps.join("");
+        }
+        LoadSite();
+
+
+
+
+      
+
+
+
+    </script>
+
+}

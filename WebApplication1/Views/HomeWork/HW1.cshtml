@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<div id="OO" class="card" style="width: 18rem;">
+
+</div>
+
+@section Scripts{
+
+    <script src="~/datas/travel.js"></script>
+    <script>
+
+        const datas = spots.CommonFormat.Section.map(empyee => {
+            const { stitle, xbody, file } = empyee;
+            let word = xbody.substring(0, 10) + "....";
+            // 檢查file.img是否是數組，如果不是，轉換為包含單一元素的數組
+            const imgArray = Array.isArray(file.img) ? file.img : [file.img];
+
+            // 遍歷imgArray數組，取得每個元素的text屬性
+            const imgUrls = imgArray.map(img => img.text);
+
+
+
+            //const imgUrls = file.img.map(img => img.text);
+            //file.img 是一個物件，而不是一個數組。
+            return (
+                `                             <div class="col-md-4">
+                                           <div class="card" style="width: 18rem;">
+                                           <img src="${imgUrls[0]}" class="card-img-top" alt="...">
+                                           <div class="card-body">
+                                           <p>${stitle}</p>
+                                           <p class="card-text">${word}</p>
+                                           </div>
+                                                   </div> </div>
+                                         `
+            )
+        })
+
+
+
+        document.querySelector('#OO').innerHTML = datas.join("");
+
+    </script>
+}
